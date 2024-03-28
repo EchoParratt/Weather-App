@@ -31,11 +31,26 @@ const WeatherApp =() => {
         const wind = document.getElementsByClassName("wind-rate");
         const temperature = document.getElementsByClassName('weather-temp');
         const location = document.getElementsByClassName('weather-location');
+        const description = document.getElementsByClassName('weather-type');
 
         humidity[0].innerHTML = data.main.humidity+" %";
         wind[0].innerHTML = Math.floor(data.wind.speed)+" km/h";
         temperature[0].innerHTML = Math.floor(data.main.temp)+" °c";
         location[0].innerHTML = data.name;
+        description[0].innerHTML = data.weather[0].main;
+
+        const container = document.querySelector('.container'); // Select the container element
+
+        if (description[0].innerHTML === 'Snow') {
+            container.style.backgroundImage = 'linear-gradient(360deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 26%, rgba(0,212,255,1) 100%)';
+        } else if (description[0].innerHTML === 'Clear'){
+            container.style.backgroundImage = 'linear-gradient(360deg, rgba(221,62,41,1) 10%, rgba(208,152,48,1) 50%, rgba(192,203,134,1) 100%)';
+        } else if (description[0].innerHTML === 'Rain'){
+            container.style.backgroundImage = 'linear-gradient(360deg, rgba(17,13,75,1) 10%, rgba(96,126,129,1) 50%, rgba(157,159,172,1) 100%)';
+        } else if (description[0].innerHTML === 'Clouds'){
+            container.style.backgroundImage = 'linear-gradient(360deg, rgba(53,53,55,1) 10%, rgba(142,173,177,1) 50%, rgba(157,159,172,1) 100%)';
+
+
 
         if(data.weather[0].icon==="01d" || data.weather[0].icon=== "01n"){
             setWicon(clear_icon);
@@ -61,9 +76,6 @@ const WeatherApp =() => {
         else{
             setWicon(clear_icon);
         }
-
-
-
     }
 
     return (
@@ -83,6 +95,7 @@ const WeatherApp =() => {
                 <div className="element">
                     <img src={humidity_icon} alt="" className="icon"/>
                     <div className="data">
+                        <div className='weather-type'>Rainy</div>
                         <div className="humidity-percent">64%</div>
                         <div className="text">Humidity</div>
                     </div>
@@ -97,6 +110,7 @@ const WeatherApp =() => {
             </div>
         </div>
     )
+}
 }
 
 export default WeatherApp
