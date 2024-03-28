@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+
 .container{
     width: 607px;
     height: 829px;
     margin: auto;
     margin-top: 75px;
     border-radius: 12px;
-    background-image: linear-gradient(180deg, #130754 0%, #03fc5e 100%);
-
+    background-image: linear-gradient(180deg, #130754 0%, #0000 100%);
 }
 
 .top-bar{
@@ -47,29 +49,36 @@
 }
 
 .weather-image{
-    margin-top: 29px;
+    margin-top: 90px;
     display: flex;
     justify-content: center;
 }
 
-.weather-temp{
-   display: flex;
-   justify-content: center; 
-   color: white;
-   font-size: 120px;
-   font-weight: 400;
+.weather-info{
+    color: white;
+    font-size: 40px;
+    font-weight: 400px;
 }
+
 
 .weather-location{
     display: flex;
     justify-content: center;
     color: white;
-    font-size: 60px;
+    font-size: 30px;
     font-weight: 400px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.weather-card{
+    display: flex;
+    margin-top: 100px;
+    justify-content: center;
+
 }
 
 .data-container{
-    margin-top: 50px;
+    margin-top: 200px;
     color: white;
     display: flex;
     justify-content: center;
@@ -90,6 +99,9 @@
 .text{
     font-size: 20px;
     font-weight: 400px;
+    font-family: 'Roboto Mono', monospace;
+
+
 }
 
 .icon{

@@ -1,102 +1,135 @@
-import React, { useState } from "react"
-import './WeatherApp.css'
+import React, { useState } from 'react';
+import './WeatherApp.css';
 
-import search_icon from "../Assets/search.png";
-import clear_icon from "../Assets/clear.png";
-import cloud_icon from "../Assets/cloud.png";
-import drizzle_icon from "../Assets/drizzle.png";
-import rain_icon from "../Assets/rain.png";
-import snow_icon from "../Assets/snow.png";
-import wind_icon from "../Assets/wind.png";
-import humidity_icon from "../Assets/humidity.png";
+import search_icon from '../Assets/search.png';
+import clear_icon from '../Assets/clear.png';
+import cloud_icon from '../Assets/cloud.png';
+import rain_icon from '../Assets/rain.png';
+import snow_icon from '../Assets/snow.png';
 
+const WeatherApp = () => {
+  const api_key = '8f5af98cd2a407387922a2eaffa213d3';
+  const [city, setCity] = useState('');
+  const [weather, setWeather] = useState({
+    city: '',
+    date: '',
+    description: '',
+    temp: null,
+    icon: rain_icon
+  });
 
-
-const WeatherApp =() => {
-
-    let api_key = "8f5af98cd2a407387922a2eaffa213d3";
-
-    const [wicon,setWicon] = useState(cloud_icon);
-
-    const search = async () => {
-        const element =document.getElementsByClassName("cityInput");
-        if(element[0].value===""){
-            return 0;
-        }
-        let url =`https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&units=Metric&appid=${api_key}`;
-
-        let response = await fetch(url);
-        let data = await response.json();
-        const humidity = document.getElementsByClassName("humidity-percent");
-        const wind = document.getElementsByClassName("wind-rate");
-        const temperature = document.getElementsByClassName('weather-temp');
-        const location = document.getElementsByClassName('weather-location');
-
-        humidity[0].innerHTML = data.main.humidity+" %";
-        wind[0].innerHTML = Math.floor(data.wind.speed)+" km/h";
-        temperature[0].innerHTML = Math.floor(data.main.temp)+" °c";
-        location[0].innerHTML = data.name;
-
-        if(data.weather[0].icon==="01d" || data.weather[0].icon=== "01n"){
-            setWicon(clear_icon);
-        }
-        else if (data.weather[0].icon==="02d" || data.weather[0].icon=== "02n"){
-            setWicon(cloud_icon);
-        }
-        else if (data.weather[0].icon==="03d" || data.weather[0].icon=== "03n"){
-            setWicon(drizzle_icon);
-        }
-        else if (data.weather[0].icon==="04d" || data.weather[0].icon=== "04n"){
-            setWicon(drizzle_icon);
-        }
-        else if (data.weather[0].icon==="09d" || data.weather[0].icon=== "09n"){
-            setWicon(rain_icon);
-        }
-        else if (data.weather[0].icon==="010d" || data.weather[0].icon=== "010n"){
-            setWicon(rain_icon);
-        }
-        else if (data.weather[0].icon==="013d" || data.weather[0].icon=== "013n"){
-            setWicon(snow_icon);
-        }
-        else{
-            setWicon(clear_icon);
-        }
+  const [backgroundColor, setBackgroundColor] = useState(''); 
 
 
-
+  const search = async () => {
+    if (city === '') {
+      return;
     }
+    
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=Metric&appid=${api_key}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('City not found');
+      }
+      const data = await response.json();
 
-    return (
-        <div className="container">
-            <div className="top-bar">
-                <input type="text" className="cityInput" placeholder="Search"/>
-                <div className="search-icon" onClick={()=>{search()}}>
-                    <img src={search_icon} alt =''/>
-                </div>
-            </div>
-            <div className="weather-image">
-                <img src={wicon} alt='weather-icon'/>
-            </div>
-            <div className="weather-temp">24°c</div>
-            <div className="weather-location">London</div>
-            <div className="data-container">
-                <div className="element">
-                    <img src={humidity_icon} alt="" className="icon"/>
-                    <div className="data">
-                        <div className="humidity-percent">64%</div>
-                        <div className="text">Humidity</div>
-                    </div>
-                </div>
-                <div className="element">
-                    <img src={wind_icon} alt="" className="icon"/>
-                    <div className="data">
-                        <div className="wind-rate">18 km/h</div>
-                        <div className="text">Wind Speed</div>
-                    </div>
-                </div>
-            </div>
+      const date = new Date().toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      const getWeatherIcon = (iconCode) => {
+        if (iconCode === "01d" || iconCode === "01n") {
+          return clear_icon;
+        } else if (iconCode === "02d" || iconCode === "02n") {
+          return cloud_icon;
+        } else if (iconCode === "03d" || iconCode === "03n") {
+          return cloud_icon;
+        } else if (iconCode === "04d" || iconCode === "04n") {
+          return cloud_icon;
+        } else if (iconCode === "09d" || iconCode === "09n") {
+          return rain_icon;
+        } else if (iconCode === "010d" || iconCode === "010n") {
+          return rain_icon;
+        } else if (iconCode === "013d" || iconCode === "013n") {
+          return snow_icon;
+        } else {
+          return rain_icon;
+        }
+      };
+
+      const getBackgroundColor = (iconCode) => {
+        switch (iconCode) {
+          case "01d":
+          case "01n":
+            return '#FFD700'; // Gold for clear sky
+          case "02d":
+          case "02n":
+          case "03d":
+          case "03n":
+          case "04d":
+          case "04n":
+            return '#B0C4DE'; // LightSteelBlue for clouds
+          case "09d":
+          case "09n":
+          case "10d":
+          case "10n":
+            return '#4682B4'; // SteelBlue for rain
+          case "13d":
+          case "13n":
+            return '#F0F8FF'; // AliceBlue for snow
+          default:
+            return '#87CEEB'; // SkyBlue as default
+        }
+      };
+
+      const bgColor = getBackgroundColor(data.weather[0].icon);
+        setBackgroundColor(bgColor);
+    
+      const weatherIcon = getWeatherIcon(data.weather[0].icon);
+      setWeather({
+        city: data.name,
+        date: date,
+        description: data.weather[0].main,
+        temp: Math.floor(data.main.temp),
+        icon: weatherIcon
+        
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div className='container' style={{ backgroundColor: backgroundColor }}>
+      <div className='top-bar'>
+        <input
+          type='text'
+          className='cityInput'
+          placeholder='Search'
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && search()}
+        />
+        <div className='search-icon' onClick={search}>
+          <img src={search_icon} alt='Search icon' />
         </div>
-    )
-}
+      </div>
+      <div className='weather-image'>
+          <img src={weather.icon} />
+        </div>
+      <div className='weather-card'>
+        <div className='weather-info'>
+          <div className='inputed-city'>{weather.city}</div>
+          <div className='date'>{weather.date}</div>
+          <div className='weather-type'>{weather.description}</div>
+          <div className='weather-temp'>{weather.temp ? `${weather.temp} °C` : ''}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default WeatherApp
+export default WeatherApp;
