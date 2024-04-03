@@ -6,19 +6,25 @@ import clear_icon from '../Assets/clear.png';
 import cloud_icon from '../Assets/cloud.png';
 import rain_icon from '../Assets/rain.png';
 import snow_icon from '../Assets/snow.png';
+import github_icon from '../Assets/github-icon.png'; // Make git icon link to github
+import umbrella_icon from '../Assets/umbrella.png';
 
 // We are using the OpenWeatherMap api
 // Thunderclient is used to check the specifics behind the calls
 const WeatherApp = () => {
   const api_key = '8f5af98cd2a407387922a2eaffa213d3';
+  // city is current state and setCity is the update method for the state (Hooks)
   const [city, setCity] = useState('');
   const [weather, setWeather] = useState({
     city: '',
     date: '',
     description: '',
     temp: null,
-    icon: null
+    icon: umbrella_icon,
+    gitIcon: github_icon,
+    intro: null
   });
+  // might add intro message later
 
 const [backgroundColor, setBackgroundColor] = useState(''); 
 
@@ -110,7 +116,9 @@ const [backgroundColor, setBackgroundColor] = useState('');
         date: date,
         description: data.weather[0].main,
         temp: Math.floor(data.main.temp),
-        icon: weatherIcon
+        icon: weatherIcon,
+        gitIcon: null,
+        intro: null
         
       });
     } catch (error) {
@@ -135,14 +143,19 @@ const [backgroundColor, setBackgroundColor] = useState('');
       </div>
       <div className='weather-image'>
           <img src={weather.icon} />
-        </div>
+      </div>
+      
       <div className='weather-card'>
         <div className='weather-info'>
           <div className='inputed-city'>{weather.city}</div>
           <div className='date'>{weather.date}</div>
           <div className='weather-type'>{weather.description}</div> 
           <div className='weather-temp'>{weather.temp ? `${weather.temp} °C` : ''}</div> 
+          <div className='weather-intro'>{weather.intro}</div>
         </div>
+      </div>
+      <div className='github-icon'>
+      <img src={weather.gitIcon} />
       </div>
     </div>
   );

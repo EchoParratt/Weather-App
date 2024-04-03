@@ -7,7 +7,7 @@
     margin-top: 75px;
     border-radius: 12px;
     /*background-image: linear-gradient(180deg, #130754 0%, #0000 100%);*/
-    background-color: #62fcaf;
+    background-color: #1B1F24;
 }
 
 .top-bar{
@@ -58,6 +58,21 @@
     color: white;
     font-size: 40px;
     font-weight: 400px;
+}
+
+.weather-intro{
+    color: #218BFF;
+    font-size: 40px;
+    font-weight: 400px;
+
+}
+
+.github-icon{
+    display:flex;
+    justify-content: left;
+    margin-left: 20px;
+    margin-top: 300px;
+
 }
 
 
